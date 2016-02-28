@@ -1,5 +1,5 @@
 PKG_ROOT = .
-PKG_CPPFLAGS = -I. -I../inst/include
+#PKG_CPPFLAGS = -I. -I../inst/include
 
 #glibs
 #GFLAGS_LIB = -lgflags
