@@ -205,7 +205,6 @@ deepboost.default <- function(x, y, instance_weights = NULL,
                          loss_type,
                          verbose,
                          classes)
-  deepboost.print(fit)
 
   return (fit)
 }
@@ -298,7 +297,6 @@ deepboost.formula <- function(formula, data, instance_weights = NULL,
                          loss_type,
                          verbose,
                          classes)
-  deepboost.print(fit)
 
   return (fit)
 }
