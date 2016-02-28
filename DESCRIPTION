@@ -10,7 +10,9 @@ Description: Creation of deep oosting models using deep decision trees (vs shall
 License: Apache License (== 2.0)
 LazyData: TRUE
 Suggests:
-    testthat
+    testthat,
+    ada,
+    caret
 Depends:
     R (>= 3.1)
 Imports:
