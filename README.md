@@ -26,7 +26,7 @@ From CRAN :
 
 Choosing parameters for a deepboost model :
 
-    best_params <- deepboost.gridSearch(formula, sonar)
+    best_params <- deepboost.gridSearch(formula, data)
 
 Training a deepboost model :
 
@@ -36,6 +36,14 @@ Training a deepboost model :
                         lambda = best_params[4][[1]], 
                         loss_type = best_params[5][[1]]
                         )
+
+Print trained model evaluation statistics :                         
+
+    print(boost)
+
+Classifying using a trained deepboost model :
+
+    labels <- predict(boost, newdata)
     
 See Help / demo directory for advanced usage.
 
