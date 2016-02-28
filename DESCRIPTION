@@ -1,14 +1,19 @@
 Package: deepboost
 Type: Package
-Title: DeepBoost ensemble modeling
+Title: DeepBoost Ensemble Modeling
 Version: 0.1
 Date: 2016-01-28
-Author: Daniel Marcous & Yotam Sandbank
-Maintainer: Daniel Marcous <dmarcous@gmail.com>
-Description: Provides deeboost models training, evaluation, predicting and hyper parameter optimising using grid search and cross validation.
-             Based on Google's Deep Boosting algorithm by Cortes et al. and on Google's C++ implementation.
-             For more info :
-             https://github.com/dmarcous/CRAN_deepboost
+Author: Daniel Marcous <dmarcous@gmail.com>, Yotam Sandbank <yotamsandbank@gmail.com>
+Authors@R: as.person(c(
+    "Daniel Marcous <dmarcous@gmail.com> [aut, cre]",
+    "Yotam Sandbank <yotamsandbank@gmail.com> [aut]",
+    "Google Inc. [cph]"
+  ))
+Maintainer: Daniel Marcous <dmarcous@gmail.com>, Yotam Sandbank <yotamsandbank@gmail.com>
+Description: Provides deepboost models training, evaluation, predicting and
+ hyper parameter optimising using grid search and cross validation.
+ Based on Google's Deep Boosting algorithm by Cortes et al. and on Google's C++ implementation.
+URL: https://github.com/dmarcous/CRAN_deepboost
 License: Apache License (== 2.0)
 LazyData: TRUE
 Suggests:

@@ -1,5 +1,6 @@
 #' @useDynLib deepboost
 #' @importFrom Rcpp evalCpp
+#' @importFrom stats contrasts model.matrix model.response
 #' @import methods
 NULL
 
