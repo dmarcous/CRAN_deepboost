@@ -1,2 +1,4 @@
 # require c++11
 CXX_STD = CXX11
+
+OBJECTS = ./tree.o ./boost.o ./deepboost_C.o ./deepboost_converters.o ./deepboost_R.o ./RcppExports.o
