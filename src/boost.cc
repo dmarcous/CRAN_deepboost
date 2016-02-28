@@ -19,18 +19,14 @@ limitations under the License.
 #include <float.h>
 #include <math.h>
 
-#include "gflags/gflags.h"
-#include "glog/logging.h"
 #include "tree.h"
 
-DEFINE_string(loss_type, "",
-              "Loss type. Required: One of exponential, logistic.");
 
-float ComputeEta(float wgtd_error, float tree_size, float alpha) {
+float ComputeEta(float wgtd_error, float tree_size, float alpha, float beta, float lambda) {
   wgtd_error = fmax(wgtd_error, kTolerance);  // Helps with division by zero.
   const float error_term =
       (1 - wgtd_error) * exp(alpha) - wgtd_error * exp(-alpha);
-  const float complexity_penalty = ComplexityPenalty(tree_size);
+  const float complexity_penalty = ComplexityPenalty(tree_size, beta, lambda);
   const float ratio = complexity_penalty / wgtd_error;
   float eta;
   if (fabs(error_term) <= 2 * complexity_penalty) {
@@ -45,17 +41,15 @@ float ComputeEta(float wgtd_error, float tree_size, float alpha) {
 
 // TODO(usyed): examples is passed by non-const reference because the example
 // weights need to be changed. This is bad style.
-void AddTreeToModel(vector<Example>& examples, Model* model) {
+void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, float beta, float lambda, int tree_depth) {
   // Initialize normalizer
   static float normalizer;
   if (model->empty()) {
-    if (FLAGS_loss_type == "exponential") {
+    if (loss_type == 'e') {
       normalizer = exp(1) * static_cast<float>(examples.size());
-    } else if (FLAGS_loss_type == "logistic") {
+    } else if (loss_type == 'l') {
       normalizer =
           static_cast<float>(examples.size()) / (log(2) * (1 + exp(-1)));
-    } else {
-      LOG(FATAL) << "Unexpected loss type: " << FLAGS_loss_type;
     }
   }
   InitializeTreeData(examples, normalizer);
@@ -70,7 +64,7 @@ void AddTreeToModel(vector<Example>& examples, Model* model) {
     const Tree& old_tree = (*model)[i].second;
     wgtd_error = EvaluateTreeWgtd(examples, old_tree);
     int sign_edge = (wgtd_error >= 0.5) ? 1 : -1;
-    gradient = Gradient(wgtd_error, old_tree.size(), alpha, sign_edge);
+    gradient = Gradient(wgtd_error, old_tree.size(), alpha, sign_edge, beta, lambda);
     if (fabs(gradient) >= fabs(best_gradient)) {
       best_gradient = gradient;
       best_wgtd_error = wgtd_error;
@@ -80,9 +74,9 @@ void AddTreeToModel(vector<Example>& examples, Model* model) {
   }
 
   // Find best new tree
-  Tree new_tree = TrainTree(examples);
+  Tree new_tree = TrainTree(examples, beta, lambda, tree_depth);
   wgtd_error = EvaluateTreeWgtd(examples, new_tree);
-  gradient = Gradient(wgtd_error, new_tree.size(), 0, -1);
+  gradient = Gradient(wgtd_error, new_tree.size(), 0, -1, beta, lambda);
   if (model->empty() || fabs(gradient) > fabs(best_gradient)) {
     best_gradient = gradient;
     best_wgtd_error = wgtd_error;
@@ -99,7 +93,7 @@ void AddTreeToModel(vector<Example>& examples, Model* model) {
     alpha = 0;
     tree = &(new_tree);
   }
-  const float eta = ComputeEta(best_wgtd_error, tree->size(), alpha);
+  const float eta = ComputeEta(best_wgtd_error, tree->size(), alpha, beta, lambda);
   if (old_tree_is_best) {
     (*model)[best_old_tree_idx].first += eta;
   } else {
@@ -111,14 +105,12 @@ void AddTreeToModel(vector<Example>& examples, Model* model) {
   normalizer = 0;
   for (Example& example : examples) {
     const float u = eta * example.label * ClassifyExample(example, *tree);
-    if (FLAGS_loss_type == "exponential") {
+    if (loss_type == 'e') {
       example.weight *= exp(-u);
-    } else if (FLAGS_loss_type == "logistic") {
+    } else if (loss_type == 'l') {
       const float z = (1 - log(2) * example.weight * old_normalizer) /
                       (log(2) * example.weight * old_normalizer);
       example.weight = 1 / (log(2) * (1 + z * exp(u)));
-    } else {
-      LOG(FATAL) << "Unexpected loss type: " << FLAGS_loss_type;
     }
     normalizer += example.weight;
   }

@@ -26,7 +26,7 @@ void InitializeTreeData(const vector<Example>& examples, float normalizer);
 Node MakeRootNode(const vector<Example>& examples);
 
 // Return a tree trained on examples.
-Tree TrainTree(const vector<Example>& examples);
+Tree TrainTree(const vector<Example>& examples, float beta, float lambda, int tree_depth);
 
 // Make child nodes using split feature/value and add them to the tree. Also
 // update info in the parent node, like child pointers.
@@ -48,7 +48,7 @@ map<Value, pair<Weight, Weight>> MakeValueToWeightsMap(const Node& node,
 // feature.
 void BestSplitValue(const map<Value, pair<Weight, Weight>>& value_to_weights,
                     const Node& node, int tree_size, Value* split_value,
-                    float* delta_gradient);
+                    float* delta_gradient, float beta, float lambda);
 
 // Given an example and a tree, classify the example with the tree.
 // NB: This function assumes that if an example has a feature value that is
@@ -57,13 +57,13 @@ void BestSplitValue(const map<Value, pair<Weight, Weight>>& value_to_weights,
 Label ClassifyExample(const Example& example, const Tree& tree);
 
 // Return the (sub)gradient of the objective with respect to a tree.
-float Gradient(float wgtd_error, int tree_size, float alpha, int sign_edge);
+float Gradient(float wgtd_error, int tree_size, float alpha, int sign_edge, float beta, float lambda);
 
 // Given a set of examples and a tree, return the weighted error of tree on
 // the examples.
 float EvaluateTreeWgtd(const vector<Example>& examples, const Tree& tree);
 
 // Return complexity penalty.
-float ComplexityPenalty(int tree_size);
+float ComplexityPenalty(int tree_size, float beta, float lambda);
 
 #endif  // TREE_H_
