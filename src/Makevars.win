@@ -2,12 +2,12 @@ PKG_ROOT = .
 PKG_CPPFLAGS = -I. -I../inst/include
 
 #glibs
-GFLAGS_LIB = -lgflags
-GLOG_LIB = -lglog
+#GFLAGS_LIB = -lgflags
+#GLOG_LIB = -lglog
 
 # require c++11
 CXX_STD = CXX11
-PKG_CXXFLAGS = $(GFLAGS_LIB) $(GLOG_LIB)
-PKG_LIBS = $(GFLAGS_LIB) $(GLOG_LIB)
+#PKG_CXXFLAGS = $(GFLAGS_LIB) $(GLOG_LIB)
+#PKG_LIBS = $(GFLAGS_LIB) $(GLOG_LIB)
 
 OBJECTS = ./tree.o ./boost.o ./deepboost_C.o ./deepboost_converters.o ./deepboost_R.o ./RcppExports.o

@@ -23,7 +23,7 @@ limitations under the License.
 // model. The tree and weight are selected via approximate coordinate descent on
 // the objective, where the "approximate" indicates that we do not search all
 // trees but instead grow trees greedily.
-void AddTreeToModel(vector<Example>& examples, Model* model);
+void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, float beta, float lambda, int tree_depth);
 
 // Classify example with model.
 Label ClassifyExample(const Example& example, const Model& model);
@@ -35,6 +35,6 @@ void EvaluateModel(const vector<Example>& examples, const Model& model,
 
 // Return the optimal weight to add to a tree that will maximally decrease the
 // objective.
-float ComputeEta(float wgtd_error, float tree_size, float alpha);
+float ComputeEta(float wgtd_error, float tree_size, float alpha, float beta, float lambda);
 
 #endif  // BOOST_H_

@@ -18,14 +18,6 @@ limitations under the License.
 
 #include "tree.h"
 
-#include "gflags/gflags.h"
-#include "glog/logging.h"
-
-DEFINE_double(beta, -1.0, "beta parameter for gradient.");
-DEFINE_double(lambda, -1.0, "lambda parameter for gradient.");
-DEFINE_int32(tree_depth, -1,
-             "Maximum depth of each decision tree. The root node has depth 0. "
-             "Required: tree_depth >= 0.");
 
 // TODO(usyed): Global variables are bad style.
 static int num_features;
@@ -34,7 +26,6 @@ static float the_normalizer;
 static bool is_initialized = false;
 
 void InitializeTreeData(const vector<Example>& examples, float normalizer) {
-  CHECK_GE(examples.size(), 1);
   num_examples = examples.size();
   num_features = examples[0].values.size();
   the_normalizer = normalizer;
@@ -72,14 +63,14 @@ map<Value, pair<Weight, Weight>> MakeValueToWeightsMap(const Node& node,
 
 void BestSplitValue(const map<Value, pair<Weight, Weight>>& value_to_weights,
                     const Node& node, int tree_size, Value* split_value,
-                    float* delta_gradient) {
+                    float* delta_gradient, float beta, float lambda) {
   *delta_gradient = 0;
   Weight left_positive_weight = 0, left_negative_weight = 0,
          right_positive_weight = node.positive_weight,
          right_negative_weight = node.negative_weight;
   float old_error = fmin(left_positive_weight + right_positive_weight,
                          left_negative_weight + right_negative_weight);
-  float old_gradient = Gradient(old_error, tree_size, 0, -1);
+  float old_gradient = Gradient(old_error, tree_size, 0, -1, beta, lambda);
   for (const pair<Value, pair<Weight, Weight>>& elem : value_to_weights) {
     left_positive_weight += elem.second.first;
     right_positive_weight -= elem.second.first;
@@ -87,7 +78,7 @@ void BestSplitValue(const map<Value, pair<Weight, Weight>>& value_to_weights,
     right_negative_weight -= elem.second.second;
     float new_error = fmin(left_positive_weight, left_negative_weight) +
                       fmin(right_positive_weight, right_negative_weight);
-    float new_gradient = Gradient(new_error, tree_size + 2, 0, -1);
+    float new_gradient = Gradient(new_error, tree_size + 2, 0, -1, beta, lambda);
     if (fabs(new_gradient) - fabs(old_gradient) >
         *delta_gradient + kTolerance) {
       *delta_gradient = fabs(new_gradient) - fabs(old_gradient);
@@ -127,8 +118,7 @@ void MakeChildNodes(Feature split_feature, Value split_value, Node* parent,
   tree->push_back(right_child);
 }
 
-Tree TrainTree(const vector<Example>& examples) {
-  CHECK(is_initialized);
+Tree TrainTree(const vector<Example>& examples, float beta, float lambda, int tree_depth) {
   Tree tree;
   tree.push_back(MakeRootNode(examples));
   NodeId node_id = 0;
@@ -144,14 +134,14 @@ Tree TrainTree(const vector<Example>& examples) {
       Value split_value;
       float delta_gradient;
       BestSplitValue(value_to_weights, node, tree.size(), &split_value,
-                     &delta_gradient);
+                     &delta_gradient, beta, lambda);
       if (delta_gradient > best_delta_gradient + kTolerance) {
         best_delta_gradient = delta_gradient;
         best_split_feature = split_feature;
         best_split_value = split_value;
       }
     }
-    if (node.depth < FLAGS_tree_depth && best_delta_gradient > kTolerance) {
+    if (node.depth < tree_depth && best_delta_gradient > kTolerance) {
       MakeChildNodes(best_split_feature, best_split_value, &node, &tree);
     }
     ++node_id;
@@ -160,7 +150,6 @@ Tree TrainTree(const vector<Example>& examples) {
 }
 
 Label ClassifyExample(const Example& example, const Tree& tree) {
-  CHECK_GE(tree.size(), 1);
   const Node* node = &tree[0];
   while (node->leaf == false) {
     if (example.values[node->split_feature] <= node->split_value) {
@@ -176,9 +165,9 @@ Label ClassifyExample(const Example& example, const Tree& tree) {
   }
 }
 
-float Gradient(float wgtd_error, int tree_size, float alpha, int sign_edge) {
+float Gradient(float wgtd_error, int tree_size, float alpha, int sign_edge, float beta, float lambda) {
   // TODO(usyed): Can we make some mild assumptions and get rid of sign_edge?
-  const float complexity_penalty = ComplexityPenalty(tree_size);
+  const float complexity_penalty = ComplexityPenalty(tree_size, beta, lambda);
   const float edge = wgtd_error - 0.5;
   const int sign_alpha = (alpha >= 0) ? 1 : -1;
   if (fabs(alpha) > kTolerance) {
@@ -200,12 +189,11 @@ float EvaluateTreeWgtd(const vector<Example>& examples, const Tree& tree) {
   return wgtd_error;
 }
 
-float ComplexityPenalty(int tree_size) {
-  CHECK(is_initialized);
+float ComplexityPenalty(int tree_size, float beta, float lambda) {
   float rademacher =
       sqrt(((2 * tree_size + 1) * (log(num_features + 2) / log(2)) *
             log(num_examples)) /
            num_examples);
-  return ((FLAGS_lambda * rademacher + FLAGS_beta) * num_examples) /
+  return ((lambda * rademacher + beta) * num_examples) /
          (2 * the_normalizer);
 }

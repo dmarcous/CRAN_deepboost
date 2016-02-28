@@ -7,8 +7,6 @@ Daniel Marcous, Yotam Sandbank
 #include <math.h>
 #include <string>
 
-#include "gflags/gflags.h"
-#include "glog/logging.h"
 
 #include "deepboost_C.h"
 #include "boost.h"
@@ -18,28 +16,16 @@ Daniel Marcous, Yotam Sandbank
 
 using namespace Rcpp;
 
-DECLARE_int32(tree_depth);
-DECLARE_double(beta);
-DECLARE_double(lambda);
-DECLARE_string(loss_type);
 
 // Train a deepboost model on the given examples, using
 // numIter iterations (which not necessarily means numIter trees)
 void Train(vector<Example>* train_examples, Model* model, int tree_depth,
- int num_iter, double beta, double lambda, char loss_type, bool verbose) {
+ int num_iter, float beta, float lambda, char loss_type, bool verbose) {
 
-	// Set flags
-	FLAGS_tree_depth = tree_depth;
-  FLAGS_beta = beta;
-  FLAGS_lambda = lambda;
-	if (loss_type == 'e') {
-	  FLAGS_loss_type = "exponential";
-	} else if (loss_type == 'l') {
-	  FLAGS_loss_type = "logistic";
-	}
+
 	// Train the model
 	for (int iter = 1; iter <= num_iter; ++iter) {
-		AddTreeToModel(*train_examples, model);
+		AddTreeToModel(*train_examples, model, loss_type, beta, lambda, tree_depth);
 		if (verbose) {
 			float error, avg_tree_size;
 			int num_trees;
