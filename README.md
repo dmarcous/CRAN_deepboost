@@ -22,7 +22,7 @@ From CRAN :
 
     install.packages("deepboost")
 
-##Example
+##Examples
 
 Choosing parameters for a deepboost model :
 
