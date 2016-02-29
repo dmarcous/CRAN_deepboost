@@ -1,5 +1,4 @@
 //#include <sstream>
-//#include <cereal/archives/binary.hpp>
 #include <Rcpp.h>
 #include "types.h"
 #include "deepboost_converters.h"
@@ -42,7 +41,8 @@ vector<Example> createExampleVectorFromDataFrame(DataFrame data)
 
       if (labelsExist)
       {
-        example -> label = std::stoi(as<std::string>(labels[i]));
+        //example -> label = std::atoi(as<std::string>(labels[i]));
+        std::istringstream(as<std::string>(labels[i])) >> example -> label;
       }
       else
       {
@@ -73,48 +73,6 @@ vector<Example> createExampleVectorFromDataFrame(DataFrame data)
 
     return examples;
 }
-
-// struct Serialisable_Example : Example {
-//   Serialisable_Example(Example ex_){
-//     values = ex_.values;
-//     label = ex_.label;
-//     weight = ex_.weight;
-//   }
-//
-//   // This method lets cereal know which data members to serialize
-//   template<class Archive>
-//   void serialize(Archive & archive) {
-//     archive( values, label, weight ); // serialize things by passing them to the archive
-//   }
-// } ;
-//
-// struct Serialisable_Node : Node {
-//   Serialisable_Node(Node nd_){
-//     split_feature = nd_.split_feature;
-//     split_value = nd_.split_value;
-//     left_child_id = nd_.left_child_id;
-//     right_child_id = nd_.right_child_id;
-//     positive_weight = nd_.positive_weight;
-//     negative_weight = nd_.negative_weight;
-//     leaf = nd_.leaf;
-//     depth = nd_.depth;
-//   }
-//   vector<Example> examples;  // Examples at this node.
-// };
-//
-// RawVector serialize_model(vector<Example> exx_) {
-//   //vector<Serialisable_Example> vExR = exx_;
-//   std::stringstream ss;
-//   {
-//     cereal::BinaryOutputArchive oarchive(ss); // Create an output archive
-//     oarchive(exx_);
-//   }
-//   ss.seekg(0, ss.end);
-//   RawVector retval(ss.tellg());
-//   ss.seekg(0, ss.beg);
-//   ss.read(reinterpret_cast<char*>(&retval[0]), retval.size());
-//   return retval;
-// }
 
 Rcpp::List modelToList(Model model_)
 {

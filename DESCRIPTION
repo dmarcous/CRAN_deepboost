@@ -10,7 +10,7 @@ Authors@R: c(
     person("Yotam", "Sandbank", email = "yotamsandbank@gmail.com", role = "aut"),
     person("Google Inc.", role = "cph")
   )
-Description: Provides deepboost models training, evaluation, predicting and
+Description: Provides deep boosting models training, evaluation, predicting and
  hyper parameter optimising using grid search and cross validation.
  Based on Google's Deep Boosting algorithm by Cortes et al. and on Google's C++ implementation.
 URL: https://github.com/dmarcous/CRAN_deepboost
