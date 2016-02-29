@@ -1,9 +1,9 @@
 Package: deepboost
 Type: Package
 Title: Deep Boosting Ensemble Modeling
-Version: 0.1
+Version: 0.1.1
 Date: 2016-02-28
-Author: Daniel Marcous, Yotam Sandbank, Google Inc.
+Author: Daniel Marcous [aut, cre], Yotam Sandbank [aut], Google Inc. [cph]
 Maintainer: Daniel Marcous <dmarcous@gmail.com>
 Authors@R: c(
     person("Daniel", "Marcous", email = "dmarcous@gmail.com", role = c("aut","cre")),
