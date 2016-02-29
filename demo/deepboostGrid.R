@@ -1,3 +1,5 @@
+library(deepboost)
+
 data("sonar")
 formula <- R ~ .
 best_params <-

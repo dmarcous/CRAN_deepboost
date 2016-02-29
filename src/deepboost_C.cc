@@ -31,10 +31,10 @@ void Train(vector<Example>* train_examples, Model* model, int tree_depth,
 			int num_trees;
 			EvaluateModel(*train_examples, *model, &error, &avg_tree_size,
 						  &num_trees);
-			Rcpp::Rcout << "Iteration: " << std::to_string(iter)
-			            << ", error: " << std::to_string(error)
-			            << ", avg tree size: " << std::to_string(avg_tree_size)
-			            << ", num trees: " << std::to_string(num_trees)
+			Rcpp::Rcout << "Iteration: " << iter
+			            << ", error: " << error
+			            << ", avg tree size: " << avg_tree_size
+			            << ", num trees: " << num_trees
 			            << std::endl;
 		}
 	}
