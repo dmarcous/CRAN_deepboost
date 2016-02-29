@@ -1,15 +1,15 @@
 Package: deepboost
 Type: Package
-Title: DeepBoost Ensemble Modeling
+Title: Deep Boosting Ensemble Modeling
 Version: 0.1
-Date: 2016-01-28
-Author: Daniel Marcous <dmarcous@gmail.com>, Yotam Sandbank <yotamsandbank@gmail.com>
-Authors@R: as.person(c(
-    "Daniel Marcous <dmarcous@gmail.com> [aut, cre]",
-    "Yotam Sandbank <yotamsandbank@gmail.com> [aut]",
-    "Google Inc. [cph]"
-  ))
-Maintainer: Daniel Marcous <dmarcous@gmail.com>, Yotam Sandbank <yotamsandbank@gmail.com>
+Date: 2016-02-28
+Author: Daniel Marcous, Yotam Sandbank, Google Inc.
+Maintainer: Daniel Marcous <dmarcous@gmail.com>
+Authors@R: c(
+    person("Daniel", "Marcous", email = "dmarcous@gmail.com", role = c("aut","cre")),
+    person("Yotam", "Sandbank", email = "yotamsandbank@gmail.com", role = "aut"),
+    person("Google Inc.", role = "cph")
+  )
 Description: Provides deepboost models training, evaluation, predicting and
  hyper parameter optimising using grid search and cross validation.
  Based on Google's Deep Boosting algorithm by Cortes et al. and on Google's C++ implementation.
