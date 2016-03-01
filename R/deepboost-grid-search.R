@@ -44,62 +44,41 @@ deepboost.gridSearch <- function(formula, data, k=10, seed=666, logging_level=1)
   data<-data[sample(nrow(data)),]
 
   folds <- cut(seq(1,nrow(data)),breaks=k,labels=FALSE)
+  best_acc <- -Inf
+  avg_acc <- 0
 
-  fold_acc <- rep(0.0,k)
-  fold_num_iter <- rep(0,k)
-  fold_lambda <- rep(0.0,k)
-  fold_beta <- rep(0.0,k)
-  fold_loss_type <- rep("l",k)
+  for(combination in 1:nrow(dpbGrid)){
+    num_iter <- dpbGrid[combination,"num_iter"]
+    beta <- dpbGrid[combination,"beta"]
+    lambda <- dpbGrid[combination,"lambda"]
+    loss_type <- as.character(dpbGrid[combination,"loss_type"])
+    acc <- 0
 
-  for(fold in 1:k){
-    testIndexes <- which(folds==fold,arr.ind=TRUE)
-    testData <- data[testIndexes, ]
-    trainData <- data[-testIndexes, ]
-
-    best_acc = -Inf
-
-    for(combination in 1:nrow(dpbGrid)){
-      num_iter <- dpbGrid[combination,"num_iter"]
-      beta <- dpbGrid[combination,"beta"]
-      lambda <- dpbGrid[combination,"lambda"]
-      loss_type <- as.character(dpbGrid[combination,"loss_type"])
+    for(fold in 1:k){
+      testIndexes <- which(folds==fold,arr.ind=TRUE)
+      testData <- data[testIndexes, ]
+      trainData <- data[-testIndexes, ]
 
       eval_model <- deepboost.formula(formula, trainData, num_iter = num_iter, beta = beta, lambda = lambda, loss_type = loss_type, verbose=verbose)
-      acc <-  sum(predict(eval_model, testData) == testData[,length(testData)]) / nrow(testData)
-      if(acc > best_acc){
-        best_acc <- acc
-        best_num_iter <- num_iter
-        best_lambda <- lambda
-        best_beta <- beta
-        best_loss_type <- loss_type
-      }
+      acc <-  acc + sum(predict(eval_model, testData) == testData[,length(testData)]) / nrow(testData)
     }
-
-    if(logging_level > 0)
-    {
-      print(paste0("Fold ",fold, "- accuracy: ", best_acc, ", num_iter: ", best_num_iter, ", beta: ", best_beta, ", labmda: ", best_lambda, ", loss_type: ", best_loss_type))
+    acc <- acc / k
+    if(acc > best_acc){
+      best_acc <- acc
+      best_num_iter <- num_iter
+      best_lambda <- lambda
+      best_beta <- beta
+      best_loss_type <- loss_type
     }
-
-    fold_acc[[fold]] <- best_acc
-    fold_num_iter[[fold]] <- best_num_iter
-    fold_lambda[[fold]] <- best_lambda
-    fold_beta[[fold]] <- best_beta
-    fold_loss_type[[fold]] <- best_loss_type
+    avg_acc <- avg_acc + acc
 
   }
-
-  best_fold = which.max(fold_acc)
-  avg_acc <- mean(fold_acc)
-  best_acc <- fold_acc[[best_fold]]
-  best_num_iter <- fold_num_iter[[best_fold]]
-  best_lambda <- fold_lambda[[best_fold]]
-  best_beta <- fold_beta[[best_fold]]
-  best_loss_type <- fold_loss_type[[best_fold]]
+  avg_acc <- avg_acc / nrow(dpbGrid)
 
   if(logging_level > 0)
   {
     print(paste0("average accuracy : ", avg_acc))
-    print(paste0("Best fold ", best_fold, "- accuracy: ", best_acc, ", num_iter: ", best_num_iter, ", beta: ", best_beta, ", labmda: ", best_lambda, ", loss_type: ", best_loss_type))
+    print(paste0("accuracy: ", best_acc, ", num_iter: ", best_num_iter, ", beta: ", best_beta, ", labmda: ", best_lambda, ", loss_type: ", best_loss_type))
   }
 
   RET <-
