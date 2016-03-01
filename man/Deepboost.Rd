@@ -35,9 +35,10 @@ Main function for deepboost model creation
 }
 \examples{
 deepboost(y ~ .,
- data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))))
+ data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
+ num_iter=1)
 deepboost(y ~ .,
- data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
- num_iter=5, beta=0.1, lambda=0.00125)
+ data.frame(x1=rep(c(0,0,1,1),22),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
+ num_iter=2, beta=0.1, lambda=0.00125)
 }
 

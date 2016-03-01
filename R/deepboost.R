@@ -116,7 +116,7 @@ deepboost.train <- function(object, data,
 #' @return A vector of respones
 #' @examples
 #' dpb <- deepboost(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
 #'  num_iter=2,tree_depth=2)
 #' deepboost.predict(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
 #' @export
@@ -137,7 +137,7 @@ deepboost.predict <- function(object, newdata) {
 #' @return List with model_statistics to console the model evaluation string
 #' @examples
 #' dpb <- deepboost(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
 #'  num_iter=2,tree_depth=2)
 #' deepboost.print(dpb)
 #' @export
@@ -156,9 +156,9 @@ deepboost.print <- function(object) {
 #' @return a list with model statistics - error, avg_tree_size, num_trees
 #' @examples
 #' dpb <- deepboost(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
 #'  num_iter=2,tree_depth=2)
-#' deepboost.evaluate(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
+#' deepboost.evaluate(dpb,data.frame(x1=rep(c(1,1,1,0),2),x2=rep(c(1,1,1,1),2)))
 #' @export
 deepboost.evaluate <- function(object, data) {
   model_stats <-
@@ -186,11 +186,11 @@ Deepboost <- new("Deepboost",
 #' @param verbose - print extra data while training TRUE / FALSE
 #' @return A trained Deepbost model
 #' @examples
-#' deepboost.default(data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20)),
-#'  factor(rep(c(0,0,0,1),20)))
-#' deepboost.default(data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20)),
-#'  factor(rep(c(0,0,0,1),20)),
-#'  num_iter=5, beta=0.1, lambda=0.00125)
+#' deepboost.default(data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2)),
+#'  factor(rep(c(0,0,0,1),2)),num_iter=1)
+#' deepboost.default(data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2)),
+#'  factor(rep(c(0,0,0,1),2)),
+#'  num_iter=2, beta=0.1, lambda=0.00125)
 #' @export
 deepboost.default <- function(x, y, instance_weights = NULL,
                               tree_depth = 5,
@@ -245,10 +245,11 @@ deepboost.default <- function(x, y, instance_weights = NULL,
 #' @return A trained Deepbost model
 #' @examples
 #' deepboost(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))))
+#'  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
+#'  num_iter=1)
 #' deepboost(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
-#'  num_iter=5, beta=0.1, lambda=0.00125)
+#'  data.frame(x1=rep(c(0,0,1,1),22),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
+#'  num_iter=2, beta=0.1, lambda=0.00125)
 #' @export
 deepboost <- function(formula, data,
                       instance_weights = NULL,
@@ -282,10 +283,11 @@ deepboost <- function(formula, data,
 #' @return A trained Deepbost model
 #' @examples
 #' deepboost.formula(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))))
+#'  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
+#'  num_iter=1)
 #' deepboost.formula(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
-#'  num_iter=5, beta=0.1, lambda=0.00125)
+#'  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
+#'  num_iter=2, beta=0.1, lambda=0.00125)
 #' @export
 deepboost.formula <- function(formula, data, instance_weights = NULL,
                               tree_depth = 5,
@@ -348,9 +350,9 @@ deepboost.formula <- function(formula, data, instance_weights = NULL,
 #' (without having to train a new model with less trees).
 #' @examples
 #' dpb <- deepboost(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
 #'  num_iter=2,tree_depth=2)
-#' predict(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
+#' predict(dpb,data.frame(x1=rep(c(1,1,1,0),2),x2=rep(c(1,1,1,1),2)))
 #' @export
 setMethod("predict", signature = "Deepboost",
           definition = function(object, newdata) {
@@ -369,7 +371,7 @@ setMethod("predict", signature = "Deepboost",
 #' Number of trees: Z"
 #' @examples
 #' dpb <- deepboost(y ~ .,
-#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))),
 #'  num_iter=2,tree_depth=2)
 #' print(dpb)
 #' @export
