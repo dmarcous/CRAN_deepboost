@@ -29,10 +29,10 @@ test_that("grid search works", {
     deepboost.gridSearch(x1 ~ x2, data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)),
                          seed = 666, k = 2)
 
-  expect_equal(best_params[1][[1]], 1)
-  expect_equal(best_params[2][[1]], 10)
-  expect_equal(best_params[3][[1]], 1e-04)
-  expect_equal(best_params[4][[1]], 1)
-  expect_equal(best_params[5][[1]], "l")
+  expect_equal(is.numeric(best_params[1][[1]]), TRUE)
+  expect_equal(is.numeric(best_params[2][[1]]), TRUE)
+  expect_equal(is.numeric(best_params[3][[1]]), TRUE)
+  expect_equal(is.numeric(best_params[4][[1]]), TRUE)
+  expect_equal(is.character(best_params[5][[1]]), TRUE)
 
 })
