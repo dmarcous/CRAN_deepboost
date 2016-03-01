@@ -17,4 +17,10 @@ a list with model statistics - error, avg_tree_size, num_trees
 \description{
 Evaluates and prints statistics for a deepboost model
 }
+\examples{
+dpb <- deepboost(y ~ .,
+ data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+ num_iter=2,tree_depth=2)
+deepboost.evaluate(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
+}
 

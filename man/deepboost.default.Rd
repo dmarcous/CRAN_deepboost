@@ -33,4 +33,11 @@ A trained Deepbost model
 \description{
 Main function for deepboost model creation
 }
+\examples{
+deepboost.default(data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20)),
+ factor(rep(c(0,0,0,1),20)))
+deepboost.default(data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20)),
+ factor(rep(c(0,0,0,1),20)),
+ num_iter=5, beta=0.1, lambda=0.00125)
+}
 

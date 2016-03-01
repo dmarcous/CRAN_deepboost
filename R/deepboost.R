@@ -114,6 +114,11 @@ deepboost.train <- function(object, data,
 #' @param object A Deepboost S4 class object
 #' @param newdata A data.frame to predict responses for
 #' @return A vector of respones
+#' @examples
+#' dpb <- deepboost(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  num_iter=2,tree_depth=2)
+#' deepboost.predict(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
 #' @export
 deepboost.predict <- function(object, newdata) {
   labels <-
@@ -130,6 +135,11 @@ deepboost.predict <- function(object, newdata) {
 #'
 #' @param object A Deepboost S4 class object
 #' @return List with model_statistics to console the model evaluation string
+#' @examples
+#' dpb <- deepboost(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  num_iter=2,tree_depth=2)
+#' deepboost.print(dpb)
 #' @export
 deepboost.print <- function(object) {
   model_stats <- deepboost.evaluate(object, object@examples)
@@ -144,6 +154,11 @@ deepboost.print <- function(object) {
 #' @param object A Deepboost S4 class object
 #' @param data a \code{data.frame} object to evaluate with the model
 #' @return a list with model statistics - error, avg_tree_size, num_trees
+#' @examples
+#' dpb <- deepboost(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  num_iter=2,tree_depth=2)
+#' deepboost.evaluate(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
 #' @export
 deepboost.evaluate <- function(object, data) {
   model_stats <-
@@ -170,6 +185,12 @@ Deepboost <- new("Deepboost",
 #' @param loss_type - "l" logistic, "e" exponential
 #' @param verbose - print extra data while training TRUE / FALSE
 #' @return A trained Deepbost model
+#' @examples
+#' deepboost.default(data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20)),
+#'  factor(rep(c(0,0,0,1),20)))
+#' deepboost.default(data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20)),
+#'  factor(rep(c(0,0,0,1),20)),
+#'  num_iter=5, beta=0.1, lambda=0.00125)
 #' @export
 deepboost.default <- function(x, y, instance_weights = NULL,
                               tree_depth = 5,
@@ -222,6 +243,12 @@ deepboost.default <- function(x, y, instance_weights = NULL,
 #' @param loss_type - "l" logistic, "e" exponential
 #' @param verbose - print extra data while training TRUE / FALSE
 #' @return A trained Deepbost model
+#' @examples
+#' deepboost(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))))
+#' deepboost(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  num_iter=5, beta=0.1, lambda=0.00125)
 #' @export
 deepboost <- function(formula, data,
                       instance_weights = NULL,
@@ -253,6 +280,12 @@ deepboost <- function(formula, data,
 #' @param loss_type - "l" logistic, "e" exponential
 #' @param verbose - print extra data while training TRUE / FALSE
 #' @return A trained Deepbost model
+#' @examples
+#' deepboost.formula(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))))
+#' deepboost.formula(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  num_iter=5, beta=0.1, lambda=0.00125)
 #' @export
 deepboost.formula <- function(formula, data, instance_weights = NULL,
                               tree_depth = 5,
@@ -313,6 +346,11 @@ deepboost.formula <- function(formula, data, instance_weights = NULL,
 #' The option \code{ntreelimit} purpose is to let the user train a model with lots
 #' of trees but use only the first trees for prediction to avoid overfitting
 #' (without having to train a new model with less trees).
+#' @examples
+#' dpb <- deepboost(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  num_iter=2,tree_depth=2)
+#' predict(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
 #' @export
 setMethod("predict", signature = "Deepboost",
           definition = function(object, newdata) {
@@ -329,6 +367,11 @@ setMethod("predict", signature = "Deepboost",
 #' Model error: X"
 #' Average tree size: Y"
 #' Number of trees: Z"
+#' @examples
+#' dpb <- deepboost(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+#'  num_iter=2,tree_depth=2)
+#' print(dpb)
 #' @export
 setMethod("show", signature = "Deepboost",
           definition = function(object) {

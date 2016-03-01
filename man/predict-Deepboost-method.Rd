@@ -20,4 +20,10 @@ The option \code{ntreelimit} purpose is to let the user train a model with lots
 of trees but use only the first trees for prediction to avoid overfitting
 (without having to train a new model with less trees).
 }
+\examples{
+dpb <- deepboost(y ~ .,
+ data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+ num_iter=2,tree_depth=2)
+predict(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
+}
 

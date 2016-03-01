@@ -9,6 +9,11 @@
 #'  - predefined, battle tested parameter possible values
 #'  - cross validation over k folds
 #' @return vector with average accuracy for chosen parameters, and a list of the best parameter combination: (accuracy, (num_iter, beta, lambda, loss_type))
+#' @examples
+#' deepboost.gridSearch(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))))
+#' deepboost.gridSearch(y ~ .,
+#'  data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))), k=5)
 #' @export
 deepboost.gridSearch <- function(formula, data, k=10, seed=666, logging_level=1) {
 

@@ -21,4 +21,10 @@ Model error: X"
 Average tree size: Y"
 Number of trees: Z"
 }
+\examples{
+dpb <- deepboost(y ~ .,
+ data.frame(x1=rep(c(0,0,1,1),20),x2=rep(c(0,1,0,1),20),y=factor(rep(c(0,0,0,1),20))),
+ num_iter=2,tree_depth=2)
+print(dpb)
+}
 
