@@ -76,7 +76,7 @@ deepboost.gridSearch <- function(formula, data, k=10, seed=666, logging_level=1)
   if(logging_level > 0)
   {
     print(paste0("average accuracy : ", avg_acc))
-    print(paste0("accuracy: ", best_acc, ", num_iter: ", best_num_iter, ", beta: ", best_beta, ", labmda: ", best_lambda, ", loss_type: ", best_loss_type))
+    print(paste0("accuracy: ", best_acc, ", num_iter: ", best_num_iter, ", beta: ", best_beta, ", lambda: ", best_lambda, ", loss_type: ", best_loss_type))
   }
 
   RET <-
