@@ -4,13 +4,13 @@ context("basic functions")
 
 data(adult, package='deepboost')
 
+set.seed(666)
+
 formula <- X..50K ~ X39 + X77516 + X13 + X2174 +  X0 + X40
 levels(adult[,length(adult)]) <- c(1,-1)
 
 train <- adult[1:29000,]
 test <- adult[29001:32560,]
-
-set.seed(666)
 
 test_that("train and predict formula works", {
   bst <- deepboost.formula(formula, train, num_iter = 5)
@@ -25,15 +25,14 @@ test_that("train and predict default works", {
 })
 
 test_that("grid search works", {
-  data("sonar")
-  formula <- R ~ .
   best_params <-
-    deepboost.gridSearch(formula, sonar, seed = 666, k = 2)
+    deepboost.gridSearch(x1 ~ x2, data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)),
+                         seed = 666, k = 2)
 
-  expect_equal(best_params[1][[1]], 0.7634895)
-  expect_equal(best_params[2][[1]], 5)
+  expect_equal(best_params[1][[1]], 1)
+  expect_equal(best_params[2][[1]], 10)
   expect_equal(best_params[3][[1]], 1e-04)
-  expect_equal(best_params[4][[1]], 0.0625)
+  expect_equal(best_params[4][[1]], 1)
   expect_equal(best_params[5][[1]], "l")
 
 })
