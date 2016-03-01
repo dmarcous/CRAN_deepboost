@@ -35,7 +35,7 @@ results <- data.frame(dataset = numeric(0), ensemble_size = numeric(0), ada_acc 
 # for each number of iterations
 for(num_iter in c(5,10,20,50)){
   # for each data set
-  for(i in 1:10){
+  for(i in c(2,4,6,7,9,10)){
     ds <- datasets[[i]]
     levels(ds[,length(ds)]) <- c(1,-1)
     formula <- formulas[[i]]
@@ -83,7 +83,7 @@ for(num_iter in c(5,10,20,50)){
         for(grow in 1:nrow(dpbGrid)){
           beta <- dpbGrid[grow,"beta"]
           lambda <- dpbGrid[grow,"lambda"]
-          eval_model <- deepboost.formula(formula, eval_train, num_iter = num_iter, beta = beta, lambda = lambda)
+          eval_model <- deepboost.formula(formula, eval_train, num_iter = num_iter, beta = beta, lambda = lambda, verbose = F)
           acc <-  sum(predict(eval_model, eval_test) == eval_test[,length(eval_test)]) / nrow(eval_test)
           if(acc > best_acc){
             best_acc <- acc
@@ -93,7 +93,7 @@ for(num_iter in c(5,10,20,50)){
         }
 
         t <- Sys.time()
-        db_model <- deepboost.formula(formula, train, num_iter = num_iter, beta = best_beta, lambda = best_lambda)
+        db_model <- deepboost.formula(formula, train, num_iter = num_iter, beta = best_beta, lambda = best_lambda, verbose = F)
         deep_acc[j] <- deep_acc[j] + sum(predict(db_model, test) == test[,length(test)]) / nrow(test)
         deep_t <- deep_t + round(difftime(Sys.time(), t, units = "secs"), 2)
       }
