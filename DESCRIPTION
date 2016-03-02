@@ -1,8 +1,8 @@
 Package: deepboost
 Type: Package
 Title: Deep Boosting Ensemble Modeling
-Version: 0.1.3
-Date: 2016-02-28
+Version: 0.1.4
+Date: 2016-03-02
 Author: Daniel Marcous [aut, cre], Yotam Sandbank [aut], Google Inc. [cph]
 Maintainer: Daniel Marcous <dmarcous@gmail.com>
 Authors@R: c(

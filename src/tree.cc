@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include <math.h>
-
+//#include <math.h>
+#include <cmath>
 #include "tree.h"
 
 
@@ -68,7 +68,7 @@ void BestSplitValue(const map<Value, pair<Weight, Weight>>& value_to_weights,
   Weight left_positive_weight = 0, left_negative_weight = 0,
          right_positive_weight = node.positive_weight,
          right_negative_weight = node.negative_weight;
-  float old_error = fmin(left_positive_weight + right_positive_weight,
+  float old_error = std::fmin(left_positive_weight + right_positive_weight,
                          left_negative_weight + right_negative_weight);
   float old_gradient = Gradient(old_error, tree_size, 0, -1, beta, lambda);
   for (const pair<Value, pair<Weight, Weight>>& elem : value_to_weights) {
@@ -76,12 +76,12 @@ void BestSplitValue(const map<Value, pair<Weight, Weight>>& value_to_weights,
     right_positive_weight -= elem.second.first;
     left_negative_weight += elem.second.second;
     right_negative_weight -= elem.second.second;
-    float new_error = fmin(left_positive_weight, left_negative_weight) +
-                      fmin(right_positive_weight, right_negative_weight);
+    float new_error = std::fmin(left_positive_weight, left_negative_weight) +
+      std::fmin(right_positive_weight, right_negative_weight);
     float new_gradient = Gradient(new_error, tree_size + 2, 0, -1, beta, lambda);
-    if (fabs(new_gradient) - fabs(old_gradient) >
+    if (std::fabs(new_gradient) - std::fabs(old_gradient) >
         *delta_gradient + kTolerance) {
-      *delta_gradient = fabs(new_gradient) - fabs(old_gradient);
+      *delta_gradient = std::fabs(new_gradient) - std::fabs(old_gradient);
       *split_value = elem.first;
     }
   }
@@ -170,9 +170,9 @@ float Gradient(float wgtd_error, int tree_size, float alpha, int sign_edge, floa
   const float complexity_penalty = ComplexityPenalty(tree_size, beta, lambda);
   const float edge = wgtd_error - 0.5;
   const int sign_alpha = (alpha >= 0) ? 1 : -1;
-  if (fabs(alpha) > kTolerance) {
+  if (std::fabs(alpha) > kTolerance) {
     return edge + sign_alpha * complexity_penalty;
-  } else if (fabs(edge) <= complexity_penalty) {
+  } else if (std::fabs(edge) <= complexity_penalty) {
     return 0;
   } else {
     return edge - sign_edge * complexity_penalty;
@@ -191,9 +191,9 @@ float EvaluateTreeWgtd(const vector<Example>& examples, const Tree& tree) {
 
 float ComplexityPenalty(int tree_size, float beta, float lambda) {
   float rademacher =
-      sqrt(((2 * tree_size + 1) * (log(num_features + 2) / log(2)) *
-            log(num_examples)) /
-           num_examples);
+      std::sqrt((float)(((2 * tree_size + 1) * (std::log(num_features + 2) / std::log(2)) *
+           std::log(num_examples)) /
+           num_examples));
   return ((lambda * rademacher + beta) * num_examples) /
          (2 * the_normalizer);
 }

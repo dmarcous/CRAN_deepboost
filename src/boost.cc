@@ -17,24 +17,25 @@ limitations under the License.
 #include "boost.h"
 
 #include <float.h>
-#include <math.h>
+//#include <math.h>
+#include <cmath>
 
 #include "tree.h"
 
 
 float ComputeEta(float wgtd_error, float tree_size, float alpha, float beta, float lambda) {
-  wgtd_error = fmax(wgtd_error, kTolerance);  // Helps with division by zero.
+  wgtd_error = std::fmax(wgtd_error, kTolerance);  // Helps with division by zero.
   const float error_term =
-      (1 - wgtd_error) * exp(alpha) - wgtd_error * exp(-alpha);
+      (1 - wgtd_error) * std::exp(alpha) - wgtd_error * std::exp(-alpha);
   const float complexity_penalty = ComplexityPenalty(tree_size, beta, lambda);
   const float ratio = complexity_penalty / wgtd_error;
   float eta;
-  if (fabs(error_term) <= 2 * complexity_penalty) {
+  if (std::fabs(error_term) <= 2 * complexity_penalty) {
     eta = -alpha;
   } else if (error_term > 2 * complexity_penalty) {
-    eta = log(-ratio + sqrt(ratio * ratio + (1 - wgtd_error)/wgtd_error));
+    eta = std::log(-ratio + std::sqrt(ratio * ratio + (1 - wgtd_error)/wgtd_error));
   } else {
-    eta = log(ratio + sqrt(ratio * ratio + (1 - wgtd_error)/wgtd_error));
+    eta = std::log(ratio + std::sqrt(ratio * ratio + (1 - wgtd_error)/wgtd_error));
   }
   return eta;
 }
@@ -46,10 +47,10 @@ void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, flo
   static float normalizer;
   if (model->empty()) {
     if (loss_type == 'e') {
-      normalizer = exp(1) * static_cast<float>(examples.size());
+      normalizer = std::exp(1) * static_cast<float>(examples.size());
     } else if (loss_type == 'l') {
       normalizer =
-          static_cast<float>(examples.size()) / (log(2) * (1 + exp(-1)));
+          static_cast<float>(examples.size()) / (std::log(2) * (1 + std::exp(-1)));
     }
   }
   InitializeTreeData(examples, normalizer);
@@ -60,12 +61,12 @@ void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, flo
   bool old_tree_is_best = false;
   for (int i = 0; i < model->size(); ++i) {
     const float alpha = (*model)[i].first;
-    if (fabs(alpha) < kTolerance) continue;  // Skip zeroed-out weights.
+    if (std::fabs(alpha) < kTolerance) continue;  // Skip zeroed-out weights.
     const Tree& old_tree = (*model)[i].second;
     wgtd_error = EvaluateTreeWgtd(examples, old_tree);
     int sign_edge = (wgtd_error >= 0.5) ? 1 : -1;
     gradient = Gradient(wgtd_error, old_tree.size(), alpha, sign_edge, beta, lambda);
-    if (fabs(gradient) >= fabs(best_gradient)) {
+    if (std::fabs(gradient) >= std::fabs(best_gradient)) {
       best_gradient = gradient;
       best_wgtd_error = wgtd_error;
       best_old_tree_idx = i;
@@ -77,7 +78,7 @@ void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, flo
   Tree new_tree = TrainTree(examples, beta, lambda, tree_depth);
   wgtd_error = EvaluateTreeWgtd(examples, new_tree);
   gradient = Gradient(wgtd_error, new_tree.size(), 0, -1, beta, lambda);
-  if (model->empty() || fabs(gradient) > fabs(best_gradient)) {
+  if (model->empty() || std::fabs(gradient) > std::fabs(best_gradient)) {
     best_gradient = gradient;
     best_wgtd_error = wgtd_error;
     old_tree_is_best = false;
@@ -106,11 +107,11 @@ void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, flo
   for (Example& example : examples) {
     const float u = eta * example.label * ClassifyExample(example, *tree);
     if (loss_type == 'e') {
-      example.weight *= exp(-u);
+      example.weight *= std::exp(-u);
     } else if (loss_type == 'l') {
-      const float z = (1 - log(2) * example.weight * old_normalizer) /
-                      (log(2) * example.weight * old_normalizer);
-      example.weight = 1 / (log(2) * (1 + z * exp(u)));
+      const float z = (1 - std::log(2) * example.weight * old_normalizer) /
+                      (std::log(2) * example.weight * old_normalizer);
+      example.weight = 1 / (std::log(2) * (1 + z * std::exp(u)));
     }
     normalizer += example.weight;
   }
@@ -145,7 +146,7 @@ void EvaluateModel(const vector<Example>& examples, const Model& model,
   *num_trees = 0;
   int sum_tree_size = 0;
   for (const pair<Weight, Tree>& wgtd_tree : model) {
-    if (fabs(wgtd_tree.first) >= kTolerance) {
+    if (std::fabs(wgtd_tree.first) >= kTolerance) {
       ++(*num_trees);
       sum_tree_size += wgtd_tree.second.size();
     }

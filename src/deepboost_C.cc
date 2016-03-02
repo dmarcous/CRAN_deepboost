@@ -3,11 +3,6 @@ Written by:
 Daniel Marcous, Yotam Sandbank
 */
 
-#include <float.h>
-#include <math.h>
-#include <string>
-
-
 #include "deepboost_C.h"
 #include "boost.h"
 #include "tree.h"

@@ -1,4 +1,3 @@
-//#include <sstream>
 #include <Rcpp.h>
 #include "types.h"
 #include "deepboost_converters.h"
