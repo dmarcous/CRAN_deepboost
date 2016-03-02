@@ -1,6 +1,6 @@
-#Deeboost modeling.
+#Deepboost modeling.
 
-Provides deeboost models training, evaluation, predicting and hyper parameter optimising using grid search and cross validation.
+Provides deepboost models training, evaluation, predicting and hyper parameter optimising using grid search and cross validation.
 
 ##Details
 
