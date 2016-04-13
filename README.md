@@ -1,6 +1,6 @@
 #Deepboost modeling.
 
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/deepboost)](https://github.com/metacran/cranlogs.app)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/deepboost)](https://github.com/metacran/cranlogs.app)
 [![cran version](http://www.r-pkg.org/badges/version/deepboost)](http://cran.rstudio.com/web/packages/deepboost)
 
 Provides deepboost models training, evaluation, predicting and hyper parameter optimising using grid search and cross validation.
