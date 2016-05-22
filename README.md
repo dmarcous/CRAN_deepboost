@@ -1,5 +1,6 @@
 #Deepboost modeling.
 
+[![Travis-CI Build Status](https://travis-ci.org/dmarcous/CRAN_deepboost.svg?branch=master)](https://travis-ci.org/dmarcous/CRAN_deepboost)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/deepboost)](https://github.com/metacran/cranlogs.app)
 [![cran version](http://www.r-pkg.org/badges/version/deepboost)](http://cran.rstudio.com/web/packages/deepboost)
 
