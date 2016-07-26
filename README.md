@@ -11,7 +11,7 @@ Provides deepboost models training, evaluation, predicting and hyper parameter o
 
 Based on Google's Deep Boosting algorithm by Cortes et al.
 
-See [this paper](http://www.umarsyed.me/KuznetsovMohriSyedNIPS2014.pdf) for details
+See [this paper](http://jmlr.org/proceedings/papers/v32/cortesb14.pdf) for details
 
 Adapted from Google's C++ deepbbost implementation :
 
