@@ -107,7 +107,7 @@ void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, flo
   for (Example& example : examples) {
     const float u = eta * example.label * ClassifyExample(example, *tree);
     if (loss_type == 'e') {
-      example.weight *= std::exp(-u);
+      example.weight = example.weight * std::exp(-u) * old_normalizer;
     } else if (loss_type == 'l') {
       const float z = (1 - std::log(2) * example.weight * old_normalizer) /
                       (std::log(2) * example.weight * old_normalizer);
