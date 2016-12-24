@@ -13,7 +13,7 @@ Authors@R: c(
 Description: Provides deep boosting models training, evaluation, predicting and
  hyper parameter optimising using grid search and cross validation.
  Based on Google's Deep Boosting algorithm, and Google's C++ implementation.
- Cortes, C., Mohri, M., & Syed, U. (2014) <URL: http://machinelearning.wustl.edu/mlpapers/papers/icml2014c2_cortesb14>.
+ Cortes, C., Mohri, M., & Syed, U. (2014) <URL:http://machinelearning.wustl.edu/mlpapers/papers/icml2014c2_cortesb14>.
 URL: https://github.com/dmarcous/CRAN_deepboost
 BugReports: https://github.com/dmarcous/CRAN_deepboost/issues
 License: Apache License (== 2.0)
