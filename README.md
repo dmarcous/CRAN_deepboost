@@ -2,7 +2,7 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/dmarcous/CRAN_deepboost.svg?branch=master)](https://travis-ci.org/dmarcous/CRAN_deepboost)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/deepboost)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/deepboost)](http://cran.rstudio.com/web/packages/deepboost)
+[![cran version](http://www.r-pkg.org/badges/version/deepboost)](https://CRAN.R-project.org/package=deepboost)
 [![codecov.io](https://codecov.io/github/dmarcous/CRAN_deepboost/coverage.svg?branch=master)](https://codecov.io/github/dmarcous/CRAN_deepboost?branch=master)
 
 Provides deepboost models training, evaluation, predicting and hyper parameter optimising using grid search and cross validation.
