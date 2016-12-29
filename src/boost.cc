@@ -55,7 +55,7 @@ void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, flo
   }
   InitializeTreeData(examples, normalizer);
   int best_old_tree_idx = -1;
-  float best_wgtd_error, wgtd_error, gradient, best_gradient = 0;
+  float wgtd_error, gradient, best_wgtd_error = 0, best_gradient = 0;
 
   // Find best old tree
   bool old_tree_is_best = false;
@@ -85,7 +85,7 @@ void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, flo
   }
 
   // Update model weights
-  float alpha;
+  float alpha = 0;
   const Tree* tree;
   if (old_tree_is_best) {
     alpha = (*model)[best_old_tree_idx].first;
