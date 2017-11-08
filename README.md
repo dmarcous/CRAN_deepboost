@@ -1,4 +1,4 @@
-#Deepboost modeling.
+# Deepboost modeling.
 
 [![Travis-CI Build Status](https://travis-ci.org/dmarcous/CRAN_deepboost.svg?branch=master)](https://travis-ci.org/dmarcous/CRAN_deepboost)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/deepboost)](https://github.com/metacran/cranlogs.app)
@@ -7,7 +7,7 @@
 
 Provides deepboost models training, evaluation, predicting and hyper parameter optimising using grid search and cross validation.
 
-##Details
+## Details
 
 Based on Google's Deep Boosting algorithm by Cortes et al.
 
@@ -21,13 +21,13 @@ Another version for the package that uses the original unmodified algorith exist
 
 <https://github.com/dmarcous/deepboost>
 
-##Installation
+## Installation
 
 From CRAN : 
 
     install.packages("deepboost")
 
-##Examples
+## Examples
 
 Choosing parameters for a deepboost model :
 
@@ -52,7 +52,7 @@ Classifying using a trained deepboost model :
     
 See Help / demo directory for advanced usage.
 
-##Credits
+## Credits
 
 R Package written and maintained by :
 
