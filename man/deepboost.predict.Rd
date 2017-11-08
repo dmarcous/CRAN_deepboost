@@ -4,12 +4,14 @@
 \alias{deepboost.predict}
 \title{Predicts instances responses based on a deepboost model}
 \usage{
-deepboost.predict(object, newdata)
+deepboost.predict(object, newdata, type = "terms")
 }
 \arguments{
 \item{object}{A Deepboost S4 class object}
 
 \item{newdata}{A data.frame to predict responses for}
+
+\item{type}{Type of prediction : "terms" - for class labels, "response" for probabilities}
 }
 \value{
 A vector of respones
@@ -23,4 +25,3 @@ dpb <- deepboost(y ~ .,
  num_iter=2,tree_depth=2)
 deepboost.predict(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
 }
-

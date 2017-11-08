@@ -113,6 +113,7 @@ deepboost.train <- function(object, data,
 #'
 #' @param object A Deepboost S4 class object
 #' @param newdata A data.frame to predict responses for
+#' @param type Type of prediction : "terms" - for class labels, "response" for probabilities
 #' @return A vector of respones
 #' @examples
 #' dpb <- deepboost(y ~ .,
@@ -120,15 +121,38 @@ deepboost.train <- function(object, data,
 #'  num_iter=2,tree_depth=2)
 #' deepboost.predict(dpb,data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)))
 #' @export
-deepboost.predict <- function(object, newdata) {
-  labels <-
-    Predict_R(newdata,
-               object@model)
+deepboost.predict <- function(object, newdata, type="terms") {
+  # Check parameter validity
+  if (!(is.character(type)) || (type != "terms" && type != "response"))
+  {
+    stop("ERROR_deepboost.predict : type must be \"terms\" - labels or \"response\" - probabilities" )
+  }
 
-  labels <- unlist(labels)
-  labels[labels==1] <- object@classes[1]
-  labels[labels==-1] <- object@classes[2]
-  return (labels)
+  if (type == "terms")
+  {
+    labels <-
+      Predict_R(newdata,
+                object@model)
+
+    labels <- unlist(labels)
+    labels[labels==1] <- object@classes[1]
+    labels[labels==-1] <- object@classes[2]
+    results = labels
+  }
+  else if (type == "response")
+  {
+    probabilities <-
+      PredictProbabilities_R(newdata,
+                             object@model)
+
+    probabilities <- unlist(probabilities)
+    probMat <- matrix(nrow=length(probabilities),ncol=2)
+    probMat[,1] <- probabilities
+    probMat[,2] <- 1.0-probabilities
+    results = probMat
+  }
+
+  return (results)
 }
 
 #' Evaluates and prints statistics for a deepboost model on the train set
@@ -343,6 +367,7 @@ deepboost.formula <- function(formula, data, instance_weights = NULL,
 #'
 #' @param object Object of class "Deepboost"
 #' @param newdata takes \code{data.frame}.
+#' @param type Type of prediction
 #'
 #' @details
 #' The option \code{ntreelimit} purpose is to let the user train a model with lots
@@ -355,8 +380,8 @@ deepboost.formula <- function(formula, data, instance_weights = NULL,
 #' predict(dpb,data.frame(x1=rep(c(1,1,1,0),2),x2=rep(c(1,1,1,1),2)))
 #' @export
 setMethod("predict", signature = "Deepboost",
-          definition = function(object, newdata) {
-            deepboost.predict(object, newdata)
+          definition = function(object, newdata, type="terms") {
+            deepboost.predict(object, newdata, type)
 })
 
 #' Print method for Deepboost model

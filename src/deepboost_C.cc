@@ -46,6 +46,14 @@ vector<Label> Predict(const vector<Example>& examples, const Model& model){
     }
 	return labels;
 }
+vector<Probability> PredictProbabilities(const vector<Example>& examples, const Model& model){
+  vector<Probability> probabilities;
+  probabilities.resize(examples.size(), 0);
+  for (unsigned i=0; i<examples.size(); i++){
+    probabilities[i] = ComputeExampleClassProbability(examples[i], model);
+  }
+  return probabilities;
+}
 
 
 // Compute the error of model on examples. Also compute the number of trees in

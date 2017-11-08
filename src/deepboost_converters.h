@@ -26,4 +26,7 @@ Rcpp::List Evaluate_C(DataFrame data, Rcpp::List model);
 // Classify examples using model
 Rcpp::List Predict_C(DataFrame data, Rcpp::List model);
 
+// Compute examples probabilities using model
+Rcpp::List PredictProbabilities_C(DataFrame data, Rcpp::List model);
+
 #endif  // DEEPBOOST_CONVERTERS_H_

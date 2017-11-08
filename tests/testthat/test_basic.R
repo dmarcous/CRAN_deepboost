@@ -24,6 +24,19 @@ test_that("train and predict default works", {
   expect_equal(length(pred), 3560)
 })
 
+test_that("train and predict probs works", {
+  bst <- deepboost.default(train[,c("X39","X77516","X13")], train$X..50K, num_iter = 5)
+  pred <- predict(bst, test, type="response")
+  expect_equal(nrow(pred), 3560)
+})
+
+test_that("predict labels and predict probs output similar decisions", {
+  bst <- deepboost.default(train[,c("X39","X77516","X13")], train$X..50K, num_iter = 5)
+  predLabels <- predict(bst, test)
+  predProbabilities <- predict(bst, test, type="response")
+  expect_equal((predLabels=="1"), (predProbabilities[,1] > 0.5))
+})
+
 test_that("grid search works", {
   best_params <-
     deepboost.gridSearch(x1 ~ x2, data.frame(x1=rep(c(1,1,1,0),5),x2=rep(c(1,1,1,1),5)),

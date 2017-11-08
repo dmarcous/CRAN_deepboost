@@ -123,12 +123,22 @@ void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, flo
   }
 }
 
-Label ClassifyExample(const Example& example, const Model& model) {
+Probability ComputeExampleClassProbability(const Example& example, const Model& model) {
   float score = 0;
+  float sumOfWeights = 0;
+  float probability = 0;
   for (const pair<Weight, Tree>& wgtd_tree : model) {
     score += wgtd_tree.first * ClassifyExample(example, wgtd_tree.second);
+    sumOfWeights += wgtd_tree.first;
   }
-  if (score < 0) {
+  probability = ((score/sumOfWeights) + 1) / 2.0;
+  return probability;
+}
+
+Label ClassifyExample(const Example& example, const Model& model) {
+  float score = 0;
+  score = ComputeExampleClassProbability(example, model);
+  if (score < 0.5) {
     return -1;
   } else {
     return 1;

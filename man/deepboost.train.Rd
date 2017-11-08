@@ -35,4 +35,3 @@ Trains a deepboost model
 \details{
 (beta,lambda) = (0,0) - adaboost, (>0,0) - L1, (0,>0) deepboost, (>0, >0) deepbost+L1
 }
-

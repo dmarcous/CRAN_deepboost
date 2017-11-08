@@ -1,8 +1,8 @@
 Package: deepboost
 Type: Package
 Title: Deep Boosting Ensemble Modeling
-Version: 0.1.5
-Date: 2016-12-28
+Version: 0.1.6
+Date: 2017-11-08
 Author: Daniel Marcous [aut, cre], Yotam Sandbank [aut], Google Inc. [cph]
 Maintainer: Daniel Marcous <dmarcous@gmail.com>
 Authors@R: c(
@@ -28,4 +28,4 @@ Imports:
     Rcpp (>= 0.12.2),
     methods
 LinkingTo: Rcpp
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

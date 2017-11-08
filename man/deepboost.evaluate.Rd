@@ -23,4 +23,3 @@ dpb <- deepboost(y ~ .,
  num_iter=2,tree_depth=2)
 deepboost.evaluate(dpb,data.frame(x1=rep(c(1,1,1,0),2),x2=rep(c(1,1,1,1),2)))
 }
-

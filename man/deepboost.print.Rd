@@ -21,4 +21,3 @@ dpb <- deepboost(y ~ .,
  num_iter=2,tree_depth=2)
 deepboost.print(dpb)
 }
-

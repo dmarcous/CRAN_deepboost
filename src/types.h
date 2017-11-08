@@ -33,6 +33,7 @@ typedef int Label;
 typedef int NodeId;
 typedef float Value;
 typedef float Weight;
+typedef float Probability;
 
 // An example consists of a vector of feature values, a label and a weight.
 // Note that this is a dense feature representation; the value of every

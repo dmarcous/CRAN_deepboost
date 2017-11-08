@@ -40,6 +40,18 @@ Rcpp::List Predict_R(DataFrame newdata,
   return labels;
 }
 
+//’ Predicts instances probabilities based on a deepboost model
+//’
+//’ @param newdata input data.frame to predict labels for
+//’ @param model trained Deepboost model
+//’ @return a list with probabilities for all instances in newdata
+// [[Rcpp::export]]
+Rcpp::List PredictProbabilities_R(DataFrame newdata,
+                     Rcpp::List model) {
+  List probabilities = PredictProbabilities_C(newdata, model);
+  return probabilities;
+}
+
 //’ Evaluates and prints statistics for a deepboost model
 //’
 //’ @param data input data.frame as training for model

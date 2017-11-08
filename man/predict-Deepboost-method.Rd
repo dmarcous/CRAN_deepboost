@@ -5,12 +5,14 @@
 \alias{predict,Deepboost-method}
 \title{Predict method for Deepboost model}
 \usage{
-\S4method{predict}{Deepboost}(object, newdata)
+\S4method{predict}{Deepboost}(object, newdata, type = "terms")
 }
 \arguments{
 \item{object}{Object of class "Deepboost"}
 
 \item{newdata}{takes \code{data.frame}.}
+
+\item{type}{Type of prediction}
 }
 \description{
 Predicted values based on deepboost model object.
@@ -26,4 +28,3 @@ dpb <- deepboost(y ~ .,
  num_iter=2,tree_depth=2)
 predict(dpb,data.frame(x1=rep(c(1,1,1,0),2),x2=rep(c(1,1,1,1),2)))
 }
-

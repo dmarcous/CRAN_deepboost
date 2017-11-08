@@ -231,4 +231,23 @@ Rcpp::List Predict_C(DataFrame data, Rcpp::List model)
   return (labels);
 }
 
+Rcpp::List PredictProbabilities_C(DataFrame data, Rcpp::List model)
+{
+  List probabilities;
+
+  // Create datasets for predict
+  vector<Example> examples = createExampleVectorFromDataFrame(data);
+  Model model_ = listToModel(model);
+
+  // predict
+  vector<Probability> probabilities_ = PredictProbabilities(examples, model_);
+
+  // adjust return value
+  for (Probability probability_ : probabilities_){
+    probabilities.push_back(probability_);
+  }
+
+  return (probabilities);
+}
+
 

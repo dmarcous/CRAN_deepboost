@@ -32,4 +32,3 @@ adult
 A dataset containing adult population personal details
 }
 \keyword{datasets}
-

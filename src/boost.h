@@ -25,6 +25,9 @@ limitations under the License.
 // trees but instead grow trees greedily.
 void AddTreeToModel(vector<Example>& examples, Model* model, char loss_type, float beta, float lambda, int tree_depth);
 
+// Compute example probability with model.
+Probability ComputeExampleClassProbability(const Example& example, const Model& model);
+
 // Classify example with model.
 Label ClassifyExample(const Example& example, const Model& model);
 

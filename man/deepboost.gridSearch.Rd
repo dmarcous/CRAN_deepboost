@@ -33,4 +33,3 @@ Finds optimised parameters for deepboost training.
 deepboost.gridSearch(y ~ .,
  data.frame(x1=rep(c(0,0,1,1),2),x2=rep(c(0,1,0,1),2),y=factor(rep(c(0,0,0,1),2))), k=2)
 }
-

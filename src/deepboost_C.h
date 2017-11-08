@@ -14,6 +14,10 @@ void Train(vector<Example>* train_examples, Model* model, int tree_depth,
  int num_iter, float beta, float lambda, char loss_type, bool verbose);
 
 
+// Compute examples probabilities using model
+vector<Probability> PredictProbabilities(const vector<Example>& examples, const Model& model);
+
+
 // Classify examples using model
 vector<Label> Predict(const vector<Example>& examples, const Model& model);
 

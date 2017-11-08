@@ -12,4 +12,3 @@ pima
 pima
 }
 \keyword{datasets}
-
